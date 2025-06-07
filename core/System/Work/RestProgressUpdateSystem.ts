@@ -10,7 +10,7 @@ import { BackpackComponent } from "../../Component/BackpackComponent";
 import { BaseExcuteSystem } from "../../Infra/Base/System/BaseExcuteSystem";
 import { RestProgressComponent, RestProgressData } from "../../Component/RestProgressComponent";
 import { Monster } from "../../Entity/Monster";
-import { MonsterPropertyComponent } from "core/Component/Property/MonsterPropertyComponent";
+import { MonsterPropertyComponent } from "../../Component/Property/MonsterPropertyComponent";
 import { log } from "../../Interface/Service/LogService";
 
 @System(SystemType.Execute)

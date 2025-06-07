@@ -1,5 +1,8 @@
-import commonConfigData from '../../../config/Common.json';
-
+// 通用配置数据
+const commonConfigData = {
+    "frame": 20,
+    "replayFrame": 5
+};
 
 export interface CommonConfig {
     frame: number;

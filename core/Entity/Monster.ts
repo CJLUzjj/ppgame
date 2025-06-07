@@ -3,7 +3,7 @@ import { BaseEntity } from "../Infra/Base/BaseEntity";
 import { MonsterType, PalStatus } from "../Data/common";
 import { MonsterPropertyComponent } from "../Component/Property/MonsterPropertyComponent";
 import { WorkType } from "../Data/WorkData";
-import { World } from "core/Infra/World";
+import { World } from "../Infra/World";
 export class Monster extends BaseEntity {
 
     constructor(world: World, id: number = 0) {

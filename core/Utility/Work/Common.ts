@@ -12,7 +12,7 @@ import { MonsterPropertyComponent } from "../../Component/Property/MonsterProper
 import { WorkInfoConfig } from "../../Data/config/WorkInfoConfig";
 import { MonsterBaseProperty } from "../../Data/MonsterData";
 import { calculateWorkTime } from "../Building/CreateBuilding";
-import { RestProgressComponent } from "core/Component/RestProgressComponent";
+import { RestProgressComponent } from "../../Component/RestProgressComponent";
 import { log } from "../../Interface/Service/LogService";
 export function getMonsterWorkEfficiency(monsterType: MonsterType, workType: WorkType): number {
     const abilities = MonsterWorkAbilityConfig.get(monsterType);

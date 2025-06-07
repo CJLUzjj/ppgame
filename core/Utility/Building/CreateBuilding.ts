@@ -1,4 +1,4 @@
-import { BuildingPropertyComponent } from "core/Component/Property/BuildingPropertyComponent";
+import { BuildingPropertyComponent } from "../../Component/Property/BuildingPropertyComponent";
 import { BuildingData } from "../../Data/BuildingData";
 import { BuildingType } from "../../Data/common";
 import { BuildingConfig } from "../../Data/config/BuildingConfig";

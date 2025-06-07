@@ -1,4 +1,4 @@
-import { World } from "core/Infra/World";
+import { World } from "../../World";
 import { BaseSystem } from "./BaseSystem";
 
 export abstract class BaseInitializeSystem extends BaseSystem {

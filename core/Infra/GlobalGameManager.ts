@@ -4,7 +4,7 @@ import { EntitiesManager } from "./EntitiesManager";
 import { CommonConfig } from "../Data/config/CommonConfig";
 import { VirtualTime } from "../Util/VirtualTime";
 import { World } from "./World";
-import { globalSaveGameService, SaveGameService } from "core/Interface/Service/SaveGameService";
+import { globalSaveGameService, SaveGameService } from "../Interface/Service/SaveGameService";
 import superjson from "superjson";
 import { log } from "../Interface/Service/LogService";
 
