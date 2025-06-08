@@ -11,11 +11,11 @@ export class DefaultLogService extends LogService {
     }
 
     error(message: any, ...args: any[]): void {
-        console.error(message, ...args);
+        console.info(message, ...args);
     }
 
     warn(message: any, ...args: any[]): void {
-        console.warn(message, ...args);
+        console.info(message, ...args);
     }
 }
 

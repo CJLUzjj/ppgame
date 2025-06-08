@@ -20,6 +20,7 @@ import "./Property/MonsterPropertyComponent";
 import "./Property/BuildingPropertyComponent";
 import "./Property/AvatarPropertyComponent";
 import "./Property/RoomPropertyComponent";
+import "./Property/HallPropertyComponent";
 
 // 进度组件
 import "./WorkProgressComponent";

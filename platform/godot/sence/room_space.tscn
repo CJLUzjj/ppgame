@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://by6vg2875dwgn"]
+
+[ext_resource type="Script" path="res://src/engine/platform/godot/script/room_space.ts" id="1_bqv4y"]
+
+[node name="room_space" type="Node2D"]
+script = ExtResource("1_bqv4y")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -8.0
+offset_top = -9.0
+offset_right = 1173.0
+offset_bottom = 663.0
+color = Color(0.176423, 0.541754, 0.440948, 1)

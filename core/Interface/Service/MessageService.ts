@@ -1,3 +1,4 @@
+import { log } from "./LogService";
 
 export class Message {
     public id: number;
@@ -14,12 +15,14 @@ export class MessageService {
 
     // 平台调用
     pushMessage(id: number, args: any) {
+        log.info("pushMessage", id, args);
         this.messageList.push(new Message(id, args));
     }
 
     // 逻辑层调用
     popMessage(): Message | null {
         if (this.messageList.length > 0) {
+            log.info("popMessage", this.messageList.length);
             return this.messageList.shift() as Message;
         }
         return null;

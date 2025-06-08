@@ -5,7 +5,7 @@ import { CommonConfig } from "../Data/config/CommonConfig";
 import { VirtualTime } from "../Util/VirtualTime";
 import { World } from "./World";
 import { globalSaveGameService, SaveGameService } from "../Interface/Service/SaveGameService";
-import superjson from "superjson";
+import { SerializationHelper } from "./SerializationHelper";
 import { log } from "../Interface/Service/LogService";
 
 export class GlobalGameManager {
@@ -38,14 +38,14 @@ export class GlobalGameManager {
         this.isStart = true;
 
         const targetFrameTime = 1000 / this.frame; // 目标帧时间 (毫秒)
-        let lastTickTime = performance.now();
+        let lastTickTime = Date.now();
         
         const gameTickLoop = () => {
             if (!this.isStart) {
                 return; // 游戏已停止
             }
             
-            const currentTime = performance.now();
+            const currentTime = Date.now();
             const actualDeltaTime = currentTime - lastTickTime; // 实际经过的时间
             
             // 使用实际的时间增量更新虚拟时间
@@ -55,7 +55,7 @@ export class GlobalGameManager {
                 world.tick(actualDeltaTime);
             });
             
-            const tickEndTime = performance.now();
+            const tickEndTime = Date.now();
             const executionTime = tickEndTime - currentTime;
             
             // 计算下次执行的延迟时间
@@ -114,7 +114,7 @@ export class GlobalGameManager {
             });
         }
 
-        const jsonString = superjson.stringify(serializationData);
+        const jsonString = SerializationHelper.stringify(serializationData);
         const encoder = new TextEncoder();
         const bytes = encoder.encode(jsonString);
 
@@ -125,7 +125,7 @@ export class GlobalGameManager {
         try {
             const decoder = new TextDecoder();
             const jsonString = decoder.decode(bytes);
-            const serializationData = superjson.parse(jsonString) as any;
+            const serializationData = SerializationHelper.parse(jsonString) as any;
             World.setWorldId(serializationData.worldIdGenerator);
             for (const world of serializationData.worlds) {
                 const worldData = world.data;

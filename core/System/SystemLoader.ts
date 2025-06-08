@@ -6,3 +6,4 @@ import "./Work/WorkProgressUpdateSystem";
 import "./Work/RestOperateSystem";
 import "./Work/RestProgressUpdateSystem";
 import "./Monster/MonsterOperateSystem";
+import "./Space/SpaceChangeSystem";

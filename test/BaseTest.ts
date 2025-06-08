@@ -12,8 +12,8 @@ import { Building } from "../core/Entity/Building";
 import { BuildingListComponent } from "../core/Component/List/BuildingListComponent";
 import { log } from "../core/Interface/Service/LogService";
 import { World } from "../core/Infra/World";
-import { BaseEntity } from "core/Infra/Base/BaseEntity";
-import { globalSaveGameService } from "core/Interface/Service/SaveGameService";
+import { BaseEntity } from "../core/Infra/Base/BaseEntity";
+import { globalSaveGameService } from "../core/Interface/Service/SaveGameService";
 
 
 let data : Map<number, Map<string, BaseComponent>> = new Map();

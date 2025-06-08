@@ -88,32 +88,39 @@ function createWorkProgress(world: World, building: Building, monsterId: number,
 function checkCanStartWork(monster: Monster, building: Building, workType: WorkType): boolean {
     const workConfig = WorkInfoConfig.get(workType);
     if (!workConfig) {
+        log.info("工作配置不存在", workType);
         return false;
     }
 
     if (!monster.hasComponent("MonsterProperty")) {
+        log.info("怪物没有MonsterProperty组件", monster.getId());
         return false;
     }
 
     const monsterPropertyComponent = monster.getComponent("MonsterProperty") as MonsterPropertyComponent;
     if (monsterPropertyComponent.status != PalStatus.Idle) {
+        log.info("怪物状态不是Idle", monster.getId());
         return false;
     }
 
     if (monsterPropertyComponent.baseProperty.level < workConfig.requiredLevel) {
+        log.info("怪物等级不足", monster.getId());
         return false;
     }
 
     if (monsterPropertyComponent.workProperty.stamina < workConfig.stamminaCost) {
+        log.info("怪物体力不足", monster.getId());
         return false;
     }
 
     const efficiency = getMonsterWorkEfficiency(monsterPropertyComponent.baseProperty.type, workType);
     if (efficiency === 0) {
+        log.info("怪物工作效率为0", monster.getId());
         return false;
     }
 
     if (!hasAvailableWorkSlot(building, workType)) {
+        log.info("建筑没有空闲工作位", building.getId());
         return false;
     }
 

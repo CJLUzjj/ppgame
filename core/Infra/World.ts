@@ -1,6 +1,8 @@
 import { EntitiesManager } from "./EntitiesManager";
 import { SystemsManager } from "./SystemsManager";
 import { log } from "../Interface/Service/LogService";
+import { Avatar } from "../Entity/Avatar";
+import { HallSpace } from "../Entity/Space/HallSpace";
 
 export class World {
     // 用于创建单例component
@@ -9,18 +11,43 @@ export class World {
     private systemsManager: SystemsManager;
     private entitiesManager: EntitiesManager;
     private isStart: boolean;
+    private isLoad: boolean;
     private currentVirtualTime: number;
     private id: number;
+
+    private avatarId: number = 0;
+    private spaceId: number = 0;
 
     constructor(id: number) {
         this.id = id;
         this.systemsManager = new SystemsManager(this);
         this.entitiesManager = new EntitiesManager(this);
         this.isStart = false;
+        this.isLoad = false;
         this.currentVirtualTime = 0;
     }
 
     public start(): void {
+        if (!this.isLoad) {
+            this.avatarId = this.getEntitiesManager().createEntity(Avatar).getId();
+            this.spaceId = this.getEntitiesManager().createEntity(HallSpace).getId();
+        } else {
+            for (const entity of this.entitiesManager.getAllEntities()) {
+                const entityId = entity.getId();
+                const componentMap = entity.getAllComponents();
+                for (const [componentName, component] of componentMap) {
+                    if (componentName === "AvatarProperty") {
+                        this.avatarId = entityId;
+                        break;
+                    }
+                    if (componentName === "HallProperty") {
+                        this.spaceId = entityId;
+                        break;
+                    }
+                }
+            }
+        }
+
         SystemsManager.registerSystems(this);
         this.systemsManager.start();
         this.isStart = true;
@@ -59,6 +86,14 @@ export class World {
         return this.id;
     }
 
+    public getAvatarId(): number {
+        return this.avatarId;
+    }
+
+    public getSpaceId(): number {
+        return this.spaceId;
+    }
+
     static getDefaultWorld(): World {
         if (!this.defaultWorld) {
             this.defaultWorld = new World(0);
@@ -82,6 +117,7 @@ export class World {
         }
 
         serializationData.entities = this.entitiesManager.serialize();
+        this.isLoad = true;
         return serializationData;
     }
 

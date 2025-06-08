@@ -2,6 +2,7 @@ import { BaseComponent } from "../../Infra/Base/BaseComponent";
 import { Message } from "../../Interface/Service/MessageService";
 import { BaseEntity } from "../../Infra/Base/BaseEntity";
 import { RegisterComponent } from "../../Infra/ComponentRegistry";
+import { log } from "../../Interface/Service/LogService";
 
 @RegisterComponent("Message")
 export class MessageComponent extends BaseComponent {
@@ -13,6 +14,7 @@ export class MessageComponent extends BaseComponent {
     }
 
     addMessage(message: Message) {
+        log.info("addMessage", message);
         const messageList = this.messageMap.get(message.id);
         if (!messageList) {
             this.messageMap.set(message.id, [message]);

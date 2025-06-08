@@ -2,6 +2,8 @@
  * 消息类型枚举
  */
 export enum MessageType {
+    ENTER_ROOM = 1,
+
     ADD_BUILDING = 1001,
     REMOVE_BUILDING = 1002,
 
@@ -18,6 +20,9 @@ export enum MessageType {
  * 消息参数接口定义
  */
 export interface MessageParams {
+    [MessageType.ENTER_ROOM]: {
+        leaveEntityId: number;
+    };
     [MessageType.ADD_BUILDING]: {
         avatarId: number;
         spaceId: number;

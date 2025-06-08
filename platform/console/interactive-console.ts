@@ -60,6 +60,7 @@ class InteractiveGameConsole {
     private avatarId: number = 0;
     private propertySyncService: TestPropertySyncService;
     private gameStarted: boolean = false;
+    private isInit: boolean = false;
 
     constructor() {
         this.rl = readline.createInterface({
@@ -253,10 +254,7 @@ class InteractiveGameConsole {
             const world = GlobalGameManager.getInstance().createWorld();
 
             this.worldId = world.getId();
-            const avatar = world.getEntitiesManager().createEntity(Avatar);
-            this.avatarId = avatar.getId();
-            const space = world.getEntitiesManager().createEntity(RoomSpace);
-            this.spaceId = space.getId();
+            this.isInit = true;
 
             log.info(`✅ 游戏世界初始化完成`);
             log.info(`📝 Avatar ID: ${this.avatarId}`);
@@ -267,7 +265,7 @@ class InteractiveGameConsole {
     }
 
     private startGame(): void {
-        if (!this.worldId || !this.avatarId || !this.spaceId) {
+        if (!this.isInit) {
             log.info("❌ 请先执行 'init' 初始化游戏");
             return;
         }
@@ -276,6 +274,8 @@ class InteractiveGameConsole {
             log.info("🚀 正在启动游戏...");
             const world = GlobalGameManager.getInstance().getWorld(this.worldId);
             world.start();
+            this.avatarId = world.getAvatarId();
+            this.spaceId = world.getSpaceId();
             GlobalGameManager.getInstance().startGame();
             this.gameStarted = true;
             log.info("✅ 游戏启动成功！");
@@ -681,25 +681,7 @@ class InteractiveGameConsole {
         try {
             log.info(`📁 正在加载游戏: ${filename}...`);
             globalSaveGameService.loadGame(filename);
-            if (GlobalGameManager.getInstance().getWorlds().length > 0) {
-                this.worldId = GlobalGameManager.getInstance().getWorlds()[0].getId();
-                for (const [entityId, componentMap] of data) {
-                    for (const [componentName, component] of componentMap) {
-                        if (componentName === "AvatarProperty") {
-                            this.avatarId = entityId;
-                            break;
-                        }
-                        if (componentName === "RoomProperty") {
-                            this.spaceId = entityId;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (this.worldId === 0 || this.avatarId === 0 || this.spaceId === 0) {
-                log.info("❌ 加载游戏失败: 找不到实体", this.worldId, this.avatarId, this.spaceId);
-                return;
-            }
+            this.isInit = true;
             log.info(`✅ 游戏 ${filename} 加载成功！`);
         } catch (error) {
             log.info(`❌ 加载游戏失败: ${error}`);
