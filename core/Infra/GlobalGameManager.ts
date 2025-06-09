@@ -35,6 +35,9 @@ export class GlobalGameManager {
     }
 
     public startGame(): void {
+        for (const world of this.worlds) {
+            world.start();
+        }
         this.isStart = true;
 
         const targetFrameTime = 1000 / this.frame; // 目标帧时间 (毫秒)

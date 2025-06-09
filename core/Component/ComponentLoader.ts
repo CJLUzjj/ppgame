@@ -7,6 +7,7 @@ import "./SpaceComponent";
 import "./TimeComponent";
 import "./RewardListComponent";
 import "./OwnerComponent";
+import "./PositionComponent";
 
 // 列表组件
 import "./List/MonsterListComponent";

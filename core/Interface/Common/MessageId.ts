@@ -27,6 +27,8 @@ export interface MessageParams {
         avatarId: number;
         spaceId: number;
         buildingType: string;
+        x: number;
+        y: number;
     };
     [MessageType.REMOVE_BUILDING]: {
         avatarId: number;

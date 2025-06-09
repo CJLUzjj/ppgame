@@ -9,5 +9,6 @@ export class Building extends BaseEntity {
 
     init() {
         this.addComponent("BuildingProperty");
+        this.addComponent("Position");
     }
 }

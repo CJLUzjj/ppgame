@@ -11,6 +11,7 @@ import { MessageComponent } from "../../Component/Input/MessageComponent";
 import { MessageParams, MessageType } from "../../Interface/Common/MessageId";
 import { BuildingType } from "../../Data/common";
 import { log } from "../../Interface/Service/LogService";
+import { PositionComponent } from "../../Component/PositionComponent";
 
 @System(SystemType.Execute)
 export class BuildingOperateSystem extends BaseExcuteSystem {
@@ -41,15 +42,20 @@ export class BuildingOperateSystem extends BaseExcuteSystem {
             const avatarId = params.avatarId;
             const spaceId = params.spaceId;
             const buildingType = params.buildingType as BuildingType;
+            const x = params.x;
+            const y = params.y;
 
             //todo 检查是否可以建造
 
             const building = this.world.getEntitiesManager().createEntity(Building);
-            if (building.hasComponent("BuildingProperty")) {
+            if (building.hasComponent("BuildingProperty") && building.hasComponent("Position")) {
                 const buildingPropertyComponent = building.getComponent("BuildingProperty") as BuildingPropertyComponent;
                 const buildingData = addDefaultBuilding(buildingType);
                 buildingPropertyComponent.setData(buildingData);
                 buildingPropertyComponent.setOwnerId(avatarId);
+
+                const buildingPositionComponent = building.getComponent("Position") as PositionComponent;
+                buildingPositionComponent.setPosition(x, y);
             }
 
             building.addComponent("Owner", avatarId);

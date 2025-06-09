@@ -3,11 +3,12 @@ import { Node } from "godot";
 import { GodotPropertySyncService } from "../service/syncService";
 import { setGlobalPropertySyncService } from "../../../core/Interface/Service/PropertySyncService";
 import { GlobalGameManager } from "../../../core/Infra/GlobalGameManager";
-import { Avatar } from "../../../core/Entity/Avatar";
+import Avatar from "./avatar";
 import { log } from "../../../core/Interface/Service/LogService";
 import { registerComponentToSence } from "../common/instantiation";
 import HallSpace from "./hall_space";
 import RoomSpace from "./room_space";
+import Building from "./building";
 
 export let globalMainScene: Node | null = null;
 
@@ -36,10 +37,9 @@ export default class Main extends Node {
 	}
 
 	_on_start_button_pressed(): void {
-		const world = GlobalGameManager.getInstance().getWorld(this.worldId);
-		world.start();
 		for (let idx = 0; idx < this.get_child_count(); idx++) {
 			const child = this.get_child(idx);
+			log.info("remove_child", child.get_name());
 			this.remove_child(child);
 		}
 		GlobalGameManager.getInstance().startGame();
@@ -57,4 +57,6 @@ function initSyncService(): void {
 
 	registerComponentToSence("HallProperty", HallSpace.createSence);
 	registerComponentToSence("RoomProperty", RoomSpace.createSence);
+	registerComponentToSence("AvatarProperty", Avatar.createSence);
+	registerComponentToSence("BuildingProperty", Building.createSence);
 }

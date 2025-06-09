@@ -11,3 +11,20 @@ offset_top = -9.0
 offset_right = 1173.0
 offset_bottom = 663.0
 color = Color(0.176423, 0.541754, 0.440948, 1)
+
+[node name="AddBuilding" type="Button" parent="."]
+offset_left = 65.0
+offset_top = 50.0
+offset_right = 152.0
+offset_bottom = 82.0
+text = "添加建筑"
+
+[node name="RemoveBuilding" type="Button" parent="."]
+offset_left = 65.0
+offset_top = 96.0
+offset_right = 152.0
+offset_bottom = 133.0
+text = "删除建筑"
+
+[connection signal="pressed" from="AddBuilding" to="." method="_on_add_building_pressed"]
+[connection signal="pressed" from="RemoveBuilding" to="." method="_on_remove_building_pressed"]

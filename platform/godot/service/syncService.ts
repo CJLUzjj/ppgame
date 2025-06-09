@@ -5,6 +5,7 @@ import { log } from "../../../core/Interface/Service/LogService";
 import { createSenceMap } from "../common/instantiation";
 
 export class SyncCallback {
+    addCallback: (component: BaseComponent) => void = () => {};
     syncCallback: (component: BaseComponent) => void = () => {};
     removeCallback: () => void = () => {};
 }
@@ -58,6 +59,11 @@ export class GodotPropertySyncService extends PropertySyncService {
             }
             const syncCallback = createFunc(entityId, component);
             syncMap.set(entityId, syncCallback);
+        } else {
+            const syncCallback = syncMap.get(entityId);
+            if (syncCallback) {
+                syncCallback.addCallback(component);
+            }
         }
         log.info("addComponent", component.owner.getId(), component.getComponentName());
     }
