@@ -1,19 +1,49 @@
-import { WorkType } from "../../Data/WorkData";
-import { MonsterType, PalStatus } from "../../Data/common";
-import { MonsterWorkAbilityConfig } from "../../Data/config/MonsterWorkAbilityConfig";
-import { WorkAbility } from "../../Data/WorkData";
-import { Building } from "../../Entity/Building";
-import { BuildingPropertyComponent } from "../../Component/Property/BuildingPropertyComponent";
-import { WorkProgressComponent } from "../../Component/WorkProgressComponent";
-import { World } from "../../Infra/World";
-import { Avatar } from "../../Entity/Avatar";
-import { Monster } from "../../Entity/Monster";
-import { MonsterPropertyComponent } from "../../Component/Property/MonsterPropertyComponent";
-import { WorkInfoConfig } from "../../Data/config/WorkInfoConfig";
-import { MonsterBaseProperty } from "../../Data/MonsterData";
+import { WorkType } from "../../../Data/WorkData";
+import { MonsterType, PalStatus, WorkBaseType } from "../../../Data/common";
+import { MonsterWorkAbilityConfig } from "../../../Data/config/MonsterWorkAbilityConfig";
+import { WorkAbility } from "../../../Data/WorkData";
+import { Building } from "../../../Entity/Building";
+import { BuildingPropertyComponent } from "../../../Component/Property/BuildingPropertyComponent";
+import { WorkProgressComponent } from "../../../Component/WorkProgressComponent";
+import { World } from "../../../Infra/World";
+import { Avatar } from "../../../Entity/Avatar";
+import { Monster } from "../../../Entity/Monster";
+import { MonsterPropertyComponent } from "../../../Component/Property/MonsterPropertyComponent";
+import { WorkInfoConfig } from "../../../Data/config/WorkInfoConfig";
+import { MonsterBaseProperty } from "../../../Data/MonsterData";
 import { calculateWorkTime } from "../Building/CreateBuilding";
-import { RestProgressComponent } from "../../Component/RestProgressComponent";
-import { log } from "../../Interface/Service/LogService";
+import { RestProgressComponent } from "../../../Component/RestProgressComponent";
+import { log } from "../../../Interface/Service/LogService";
+import { BuildingWorkConfig } from "../../../Data/config/work/BuildingWork";
+import { ProductionWorkConfig } from "../../../Data/config/work/ProductionWork";
+import { RestWorkConfig } from "../../../Data/config/work/RestWork";
+import { SyntheticWorkConfig } from "../../../Data/config/work/SyntheticWork";
+import { createProductionWorkProgress } from "./ProductionWork";
+import { createBuildingWorkProgress } from "./BuildingWork";
+import { createRestWorkProgress } from "./RestWork";
+import { createSyntheticWorkProgress } from "./SyntheticWork";
+export const workIndex: Map<WorkType, WorkBaseType> = new Map();
+
+function buildIndex() {
+    for (const workType in ProductionWorkConfig) {
+        workIndex.set(workType as WorkType, WorkBaseType.Production);
+    }
+
+    for (const workType in BuildingWorkConfig) {
+        workIndex.set(workType as WorkType, WorkBaseType.Building);
+    }
+    
+    for (const workType in RestWorkConfig) {
+        workIndex.set(workType as WorkType, WorkBaseType.Rest);
+    }
+
+    for (const workType in SyntheticWorkConfig) {
+        workIndex.set(workType as WorkType, WorkBaseType.Synthetic);
+    }
+}
+
+buildIndex();
+
 export function getMonsterWorkEfficiency(monsterType: MonsterType, workType: WorkType): number {
     const abilities = MonsterWorkAbilityConfig.get(monsterType);
     const ability = abilities?.find((a: WorkAbility) => a.workType === workType);
@@ -29,6 +59,48 @@ export function hasAvailableWorkSlot(building: Building, workType: WorkType): bo
         }
     }
     return false;
+}
+
+export function processStartWork1(world: World, avatarId: number, buildingId: number, workType: WorkType, monsterId: number): boolean {
+    const building = world.getEntitiesManager().getEntity(buildingId) as Building;
+    if (!building) {
+        log.info("建筑不存在", buildingId);
+        return false;
+    }
+
+    const avatar = world.getEntitiesManager().getEntity(avatarId) as Avatar;
+    if (!avatar) {
+        log.info("avatar不存在", avatarId);
+        return false;
+    }
+
+    const monster = world.getEntitiesManager().getEntity(monsterId) as Monster;
+    if (!monster) {
+        log.info("怪物不存在", monsterId);
+        return false;
+    }
+    
+    if (!checkCanStartWork(monster, building, workType)) {
+        return false;
+    }
+
+    const buildingPropertyComponent = building.getComponent("BuildingProperty") as BuildingPropertyComponent;
+    buildingPropertyComponent.addWorkers(monsterId);
+
+    const monsterPropertyComponent = monster.getComponent("MonsterProperty") as MonsterPropertyComponent;
+    monsterPropertyComponent.startWork(workType, buildingId, world.getCurrentVirtualTime());
+
+    const baseType = workIndex.get(workType);
+    if (baseType == WorkBaseType.Production) {
+        createProductionWorkProgress(world, building, monsterId, workType, monsterPropertyComponent.baseProperty);
+    } else if (baseType == WorkBaseType.Building) {
+        createBuildingWorkProgress(world, building, monsterId, workType, monsterPropertyComponent.baseProperty);
+    } else if (baseType == WorkBaseType.Rest) {
+        createRestWorkProgress(world, building, monsterId, monsterPropertyComponent.baseProperty);
+    } else if (baseType == WorkBaseType.Synthetic) {
+        createSyntheticWorkProgress(world, building, monsterId, workType, monsterPropertyComponent.baseProperty);
+    }
+    return true;
 }
 
 export function processStartWork(world: World, avatarId: number, buildingId: number, workType: WorkType, monsterId: number): boolean {

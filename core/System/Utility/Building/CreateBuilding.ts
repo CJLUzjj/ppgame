@@ -1,14 +1,14 @@
-import { BuildingPropertyComponent } from "../../Component/Property/BuildingPropertyComponent";
-import { BuildingData } from "../../Data/BuildingData";
-import { BuildingType } from "../../Data/common";
-import { BuildingConfig } from "../../Data/config/BuildingConfig";
-import { BuildingIdGenerator } from "../../Util/IdGenerator";
-import { MonsterBaseProperty, MonsterWorkProperty } from "../../Data/MonsterData";
-import { Monster } from "../../Entity/Monster";
-import { WorkType } from "../../Data/WorkData";
+import { BuildingPropertyComponent } from "../../../Component/Property/BuildingPropertyComponent";
+import { BuildingData } from "../../../Data/BuildingData";
+import { BuildingType } from "../../../Data/common";
+import { BuildingConfig } from "../../../Data/config/BuildingConfig";
+import { BuildingIdGenerator } from "../../../Util/IdGenerator";
+import { MonsterBaseProperty, MonsterWorkProperty } from "../../../Data/MonsterData";
+import { Monster } from "../../../Entity/Monster";
+import { WorkType } from "../../../Data/WorkData";
 import { getMonsterWorkEfficiency } from "../Work/Common";
-import { WorkInfoConfig } from "../../Data/config/WorkInfoConfig";
-import { log } from "../../Interface/Service/LogService";
+import { WorkInfoConfig } from "../../../Data/config/WorkInfoConfig";
+import { log } from "../../../Interface/Service/LogService";
 
 export function addDefaultBuilding(buildingType: BuildingType): BuildingData {
     // 根据建筑类型创建建筑实例
@@ -16,6 +16,8 @@ export function addDefaultBuilding(buildingType: BuildingType): BuildingData {
     if (!template) {
         throw new Error(`建筑类型 ${buildingType} 不存在`);
     }
+
+    // toto: 这里使用了浅拷贝
     const building = {
         ...template,
         currentWorkers: 0

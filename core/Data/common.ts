@@ -59,3 +59,10 @@ export enum SpaceType {
     Hall = "hall",
     Room = "room",
 }
+
+export enum WorkBaseType {
+    Production = "Production",
+    Building = "Building",
+    Rest = "Rest",
+    Synthetic = "Synthetic",
+}

@@ -2,7 +2,7 @@ import { BaseSystem } from "../../Infra/Base/System/BaseSystem";
 import { World } from "../../Infra/World";
 import { BaseEntity } from "../../Infra/Base/BaseEntity";
 import { WorkProgressComponent, WorkProgressData } from "../../Component/WorkProgressComponent";
-import { processStopWork } from "../../Utility/Work/Common";
+import { processStopWork } from "../Utility/Work/Common";
 import { OwnerComponent } from "../../Component/OwnerComponent";
 import { Avatar } from "../../Entity/Avatar";
 import { BackpackComponent } from "../../Component/BackpackComponent";

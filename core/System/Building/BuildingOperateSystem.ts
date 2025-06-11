@@ -2,7 +2,7 @@ import { World } from "../../Infra/World";
 import { BaseExcuteSystem } from "../../Infra/Base/System/BaseExcuteSystem";
 import { ProcessBuildingComponent } from "../../Component/Process/ProcessBuildingComponent";
 import { BaseEntity } from "../../Infra/Base/BaseEntity";
-import { addDefaultBuilding } from "../../Utility/Building/CreateBuilding";
+import { addDefaultBuilding } from "../Utility/Building/CreateBuilding";
 import { Building } from "../../Entity/Building";
 import { BuildingPropertyComponent, BuildingState } from "../../Component/Property/BuildingPropertyComponent";
 import { BuildingListComponent } from "../../Component/List/BuildingListComponent";

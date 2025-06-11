@@ -5,7 +5,7 @@ import { MessageComponent } from "../../Component/Input/MessageComponent";
 import { BaseEntity } from "../../Infra/Base/BaseEntity";
 import { MessageParams, MessageType } from "../../Interface/Common/MessageId";
 import { MonsterType } from "../../Data/common";
-import { addDefaultMonster } from "../../Utility/Monster/CreateMonster";
+import { addDefaultMonster } from "../Utility/Monster/CreateMonster";
 import { Monster } from "../../Entity/Monster";
 import { MonsterPropertyComponent } from "../../Component/Property/MonsterPropertyComponent";
 import { MonsterListComponent } from "../../Component/List/MonsterListComponent";

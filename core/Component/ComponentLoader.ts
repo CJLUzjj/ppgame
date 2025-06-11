@@ -29,3 +29,10 @@ import "./RestProgressComponent";
 
 // 处理组件
 import "./Process/ProcessBuildingComponent";
+
+// 工作进度组件
+import "./Work/BuildingWorkProgressComponent";
+import "./Work/ProductionWorkProgressComponent";
+import "./Work/RestWorkProgressComponent";
+import "./Work/SyntheticWorkProgressComponent";
+

@@ -3,7 +3,7 @@ import { BaseSystem } from "../../Infra/Base/System/BaseSystem";
 import { World } from "../../Infra/World";
 import { BaseExcuteSystem } from "../../Infra/Base/System/BaseExcuteSystem";
 import { BaseEntity } from "../../Infra/Base/BaseEntity";
-import { processStartWork, processStopWork, processStartRest, processStopRest } from "../../Utility/Work/Common";
+import { processStartWork, processStopWork, processStartRest, processStopRest } from "../Utility/Work/Common";
 import { MessageComponent } from "../../Component/Input/MessageComponent";
 import { MessageParams, MessageType } from "../../Interface/Common/MessageId";
 import { WorkType } from "../../Data/WorkData";

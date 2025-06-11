@@ -24,6 +24,15 @@ export class WorkAbility {
     efficiency: number;  // 效率 1-100
 }
 
+export class WorkCost {
+    constructor(itemId: number, quantity: number) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+    }
+    itemId: number;
+    quantity: number;
+}
+
 // 工作产出接口
 export class WorkOutput {
     constructor(itemId: number, quantity: number, probability: number) {
@@ -53,4 +62,102 @@ export class WorkInfo {
     requiredLevel: number;
     outputs: WorkOutput[];
     stamminaCost: number;    // 体力消耗
+}
+
+export abstract class BaseWork {
+    workType: WorkType;
+    baseTime: number;
+    requiredLevel: number;
+    stamminaCost: number;
+    constructor(workType: WorkType, baseTime: number, requiredLevel: number, stamminaCost: number) {
+        this.workType = workType;
+        this.baseTime = baseTime;
+        this.requiredLevel = requiredLevel;
+        this.stamminaCost = stamminaCost;
+    }
+}
+
+export class ProductionWork extends BaseWork {
+    constructor(workType: WorkType, baseTime: number, requiredLevel: number, stamminaCost: number, outputs: WorkOutput[]) {
+        super(workType, baseTime, requiredLevel, stamminaCost);
+        this.outputs = outputs;
+    }
+    outputs: WorkOutput[];
+}
+
+export class RestWork extends BaseWork {
+    constructor(workType: WorkType, efficiency: number) {
+        super(workType, 0, 0, 0);
+        this.efficiency = efficiency;
+    }
+    efficiency: number;
+}
+
+export class BuildingWork extends BaseWork {
+    constructor(workType: WorkType, baseTime: number, requiredLevel: number, stamminaCost: number, inputs: WorkCost[], buildingType: string) {
+        super(workType, baseTime, requiredLevel, stamminaCost);
+        this.inputs = inputs;
+        this.buildingType = buildingType;
+    }
+    inputs: WorkCost[];
+    buildingType: string;
+}
+
+export class SyntheticWork extends BaseWork {
+    constructor(workType: WorkType, baseTime: number, requiredLevel: number, stamminaCost: number, inputs: WorkCost[], outputs: WorkOutput[]) {
+        super(workType, baseTime, requiredLevel, stamminaCost);
+        this.inputs = inputs;
+        this.outputs = outputs;
+    }
+    inputs: WorkCost[];
+    outputs: WorkOutput[];
+}
+
+export class BaseWorkProgressData {
+    monsterId: number;
+    workType: WorkType;
+    startTime: number;
+    endTime: number;
+    progress: number;
+    buildingId: number;
+    constructor(monsterId: number, workType: WorkType, startTime: number, endTime: number, progress: number, buildingId: number) {
+        this.monsterId = monsterId;
+        this.workType = workType;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.progress = progress;
+        this.buildingId = buildingId;
+    }
+}
+
+export class ProductionWorkProgressData extends BaseWorkProgressData {
+    workConfig: ProductionWork;
+    constructor(monsterId: number, workType: WorkType, startTime: number, endTime: number, progress: number, buildingId: number, workConfig: ProductionWork) {
+        super(monsterId, workType, startTime, endTime, progress, buildingId);
+        this.workConfig = workConfig;
+    }
+}
+
+export class BuildingWorkProgressData extends BaseWorkProgressData {
+    workConfig: BuildingWork;
+        constructor(monsterId: number, workType: WorkType, startTime: number, endTime: number, progress: number, buildingId: number, workConfig: BuildingWork) {
+        super(monsterId, workType, startTime, endTime, progress, buildingId);
+        this.workConfig = workConfig;
+    }
+}
+
+export class RestWorkProgressData extends BaseWorkProgressData {
+    workConfig: RestWork;
+    constructor(monsterId: number, workType: WorkType, startTime: number, endTime: number, progress: number, buildingId: number, workConfig: RestWork) {
+        super(monsterId, workType, startTime, endTime, progress, buildingId);
+        this.workConfig = workConfig;
+    }
+}
+
+export class SyntheticWorkProgressData extends BaseWorkProgressData {
+    workConfig: SyntheticWork;
+    constructor(monsterId: number, workType: WorkType, startTime: number, endTime: number, progress: number, buildingId: number, workConfig: SyntheticWork) {
+        super(monsterId, workType, startTime, endTime, progress, buildingId);
+        this.workConfig = workConfig;
+    }
 }
